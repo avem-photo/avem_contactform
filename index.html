@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>AveM Photography</title>
+
+        <link rel="stylesheet" href="index.css" />
+    </head>
+    <body>
+        <div id="avemContactForm">
+            <form @submit.prevent="submitContactForm">
+                <input id="vendor-id" name="vendor_id" v-model="contactForm.vendor_id" type="hidden">
+                <input id="vendor-name" name="vendor_name" v-model="contactForm.vendor_name" type="hidden">
+                <input id="contact-form-id" name="contact_form_id" v-model="contactForm.contact_form_id" type="hidden">
+                <input id="company-id" name="company_id" v-model="contactForm.company_id" type="hidden">
+                <input id="src-host" name="src_host" v-model="contactForm.src_host" type="hidden">
+                <div class="form-label-group">
+                    <label for="contactFullName">Full Name</label>
+                    <input type="text" id="contactFullName" name="full_name" v-model="contactForm.full_name" class="form-control" required />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" name="email" v-model="contactForm.email" class="form-control" required />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactPhoneNumber">Phone Number</label>
+                    <input type="tel" id="contactPhoneNumber" name="phone_number" v-model="contactForm.phone_number" class="form-control" />
+                </div>
+                <div class="form-label-group">
+                    <label>What type of event are you hosting?</label>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeWedding" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Wedding" />
+                        <label for="eventTypeWedding">Wedding</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeCorporate" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Corporate" />
+                        <label for="eventTypeCorporate">Corporate</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeFamily" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Family" />
+                        <label for="eventTypeFamily">Family</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeNewborn" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Newborn" />
+                        <label for="eventTypeNewborn">Newborn</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeEngagement" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Engagement" />
+                        <label for="eventTypeEngagement">Engagement</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypePortrait" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Portrait" />
+                        <label for="eventTypePortrait">Portrait</label>
+                    </div>
+                    <div class="radio-container">
+                        <input type="radio" id="eventTypeOther" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Other" />
+                        <label for="eventTypeOther">Other</label>
+                    </div>
+                </div>
+                <div class="form-label-group">
+                    <label for="contactEventDate">Event Date</label>
+                    <input type="date" id="contactEventDate" name="event_date" v-model="contactForm.event_date" class="form-control" />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactLocation">Location</label>
+                    <input type="text" id="contactLocation" name="event_location" v-model="contactForm.event_location" class="form-control" />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactGuestCount">Estimated Guest Count</label>
+                    <input type="number" id="contactGuestCount" name="event_guests" v-model="contactForm.event_guests" class="form-control" />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactBudget">Estimated Budget</label>
+                    <input type="text" id="contactBudget" name="event_budget" v-model="contactForm.event_budget" class="form-control" />
+                </div>
+                <div class="form-label-group">
+                    <label for="contactDetails">Tell us about your event</label>
+                    <textarea type="text" id="contactDetails" name="event_details" v-model="contactForm.event_details" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="form-submit-btn">
+                    <span v-if="formReady">
+                        <i class="fas fa-fw fa-paper-plane mr-2"></i>
+                        Send
+                    </span>
+                    <span v-if="formSending">
+                        <i class="fas fa-fw fa-circle-notch fa-spin mr-2"></i>
+                        Sending...
+                    </span>
+                    <span v-if="formSuccess">
+                        <i class="fas fa-fw fa-check mr-2"></i>
+                        Sent
+                    </span>
+                </button>
+            </form>
+        </div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>
