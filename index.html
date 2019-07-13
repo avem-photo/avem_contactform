@@ -9,7 +9,7 @@
     </head>
     <body>
         <div id="avemContactForm">
-            <form @submit.prevent="submitContactForm">
+            <form @submit.prevent="submitContactForm" class="form-container">
                 <input id="vendor-id" name="vendor_id" v-model="contactForm.vendor_id" type="hidden">
                 <input id="vendor-name" name="vendor_name" v-model="contactForm.vendor_name" type="hidden">
                 <input id="contact-form-id" name="contact_form_id" v-model="contactForm.contact_form_id" type="hidden">
@@ -74,7 +74,7 @@
                     <label for="contactBudget">Estimated Budget</label>
                     <input type="text" id="contactBudget" name="event_budget" v-model="contactForm.event_budget" class="form-control" />
                 </div>
-                <div class="form-label-group">
+                <div class="form-label-group full-width">
                     <label for="contactDetails">Tell us about your event</label>
                     <textarea type="text" id="contactDetails" name="event_details" v-model="contactForm.event_details" class="form-control" rows="3"></textarea>
                 </div>
