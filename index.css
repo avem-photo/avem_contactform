@@ -85,6 +85,11 @@
     outline: none;
 }
 
+.form-label-group input.form-control.invalid-field,
+.form-label-group textarea.form-control.invalid-field {
+    border: 2px solid #dc3545 !important;
+}
+
 input,
 textarea {
     overflow: visible;

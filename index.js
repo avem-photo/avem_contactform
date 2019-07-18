@@ -5,6 +5,7 @@ const hbProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 let avemContactForm = new Vue({
     el: '#avemContactForm',
     data: {
+        attemptSubmit: false,
         contactForm: {
             vendor_id: '5ce600978a6d8a2fb9a4b840',
             vendor_name: 'Diane Lynn Lipski',
@@ -25,6 +26,13 @@ let avemContactForm = new Vue({
         formSending: false,
         formSuccess: false
     },
+    computed: {
+        invalidName: function(){
+            return this.contactForm.full_name === '';
+        },
+        validEmail: function(){},
+        validPhone: function(){}
+    },
     methods: {
         submitContactForm(){
             let self = this;
@@ -40,7 +48,7 @@ let avemContactForm = new Vue({
     
                 axios({
                     method: 'post',
-                    url: self.hbProxyUrl + self.hbFormUrl,
+                    url: hbProxyUrl + hbFormUrl,
                     data: self.contactForm
                 }).then(
                     function(){
@@ -52,6 +60,7 @@ let avemContactForm = new Vue({
                         setTimeout(function(){
                             self.formSuccess = false;
                             self.formReady = true;
+                            self.attemptSubmit = false;
                         }, 2000);
                     }
                 ).catch(
@@ -60,6 +69,7 @@ let avemContactForm = new Vue({
 
                         self.formSending = false;
                         self.formReady = true;
+                        self.attemptSubmit = false;
                     }
                 );
             }, 2000);
@@ -84,6 +94,16 @@ let avemContactForm = new Vue({
         },
         resetContactForm(){
             this.contactForm = this.getDefaultContactForm();
+        },
+        validateForm(evt){
+            this.attemptSubmit = true;
+
+            if (this.invalidName){
+                evt.preventDefault();
+            }
+            else {
+                this.submitContactForm();
+            }
         }
     }
 });

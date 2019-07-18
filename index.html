@@ -9,23 +9,23 @@
     </head>
     <body>
         <div id="avemContactForm">
-            <form @submit.prevent="submitContactForm" class="form-container">
+            <form @submit.prevent="validateForm" class="form-container">
                 <input id="vendor-id" name="vendor_id" v-model="contactForm.vendor_id" type="hidden">
                 <input id="vendor-name" name="vendor_name" v-model="contactForm.vendor_name" type="hidden">
                 <input id="contact-form-id" name="contact_form_id" v-model="contactForm.contact_form_id" type="hidden">
                 <input id="company-id" name="company_id" v-model="contactForm.company_id" type="hidden">
                 <input id="src-host" name="src_host" v-model="contactForm.src_host" type="hidden">
                 <div class="form-label-group">
-                    <label for="contactFullName">Full Name</label>
-                    <input type="text" id="contactFullName" name="full_name" v-model="contactForm.full_name" class="form-control" required />
+                    <label for="contactFullName">Full Name *</label>
+                    <input type="text" id="contactFullName" name="full_name" v-model.trim="contactForm.full_name" class="form-control" :class="{ 'invalid-field': attemptSubmit && invalidName }" />
                 </div>
                 <div class="form-label-group">
-                    <label for="contactEmail">Email</label>
-                    <input type="email" id="contactEmail" name="email" v-model="contactForm.email" class="form-control" required />
+                    <label for="contactEmail">Email *</label>
+                    <input type="email" id="contactEmail" name="email" v-model.trim="contactForm.email" class="form-control" />
                 </div>
                 <div class="form-label-group">
                     <label for="contactPhoneNumber">Phone Number</label>
-                    <input type="tel" id="contactPhoneNumber" name="phone_number" v-model="contactForm.phone_number" class="form-control" />
+                    <input type="tel" id="contactPhoneNumber" name="phone_number" v-model.trim="contactForm.phone_number" class="form-control" />
                 </div>
                 <div class="form-label-group">
                     <label>What type of event are you hosting?</label>
@@ -60,23 +60,23 @@
                 </div>
                 <div class="form-label-group">
                     <label for="contactEventDate">Event Date</label>
-                    <input type="date" id="contactEventDate" name="event_date" v-model="contactForm.event_date" class="form-control" />
+                    <input type="date" id="contactEventDate" name="event_date" v-model.trim="contactForm.event_date" class="form-control" />
                 </div>
                 <div class="form-label-group">
                     <label for="contactLocation">Location</label>
-                    <input type="text" id="contactLocation" name="event_location" v-model="contactForm.event_location" class="form-control" />
+                    <input type="text" id="contactLocation" name="event_location" v-model.trim="contactForm.event_location" class="form-control" />
                 </div>
                 <div class="form-label-group">
                     <label for="contactGuestCount">Estimated Guest Count</label>
-                    <input type="number" id="contactGuestCount" name="event_guests" v-model="contactForm.event_guests" class="form-control" />
+                    <input type="number" id="contactGuestCount" name="event_guests" v-model.trim="contactForm.event_guests" class="form-control" />
                 </div>
                 <div class="form-label-group">
                     <label for="contactBudget">Estimated Budget</label>
-                    <input type="text" id="contactBudget" name="event_budget" v-model="contactForm.event_budget" class="form-control" />
+                    <input type="text" id="contactBudget" name="event_budget" v-model.trim="contactForm.event_budget" class="form-control" />
                 </div>
                 <div class="form-label-group full-width">
                     <label for="contactDetails">Tell us about your event</label>
-                    <textarea type="text" id="contactDetails" name="event_details" v-model="contactForm.event_details" class="form-control" rows="3"></textarea>
+                    <textarea type="text" id="contactDetails" name="event_details" v-model.trim="contactForm.event_details" class="form-control" rows="3"></textarea>
                 </div>
                 <button type="submit" class="form-submit-btn">
                     <span v-if="formReady">
