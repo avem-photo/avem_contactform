@@ -18,49 +18,54 @@
                 <div class="form-label-group">
                     <label for="contactFullName">Full Name *</label>
                     <input type="text" id="contactFullName" name="full_name" v-model.trim="contactForm.full_name" class="form-control" :class="{ 'invalid-field': attemptSubmit && invalidName }" />
+                    <div v-if="attemptSubmit && invalidName" class="invalid-message">This field is required</div>
                 </div>
                 <div class="form-label-group">
                     <label for="contactEmail">Email *</label>
-                    <input type="email" id="contactEmail" name="email" v-model.trim="contactForm.email" class="form-control" />
+                    <input type="text" id="contactEmail" name="email" v-model.trim="contactForm.email" class="form-control" :class="{ 'invalid-field': attemptSubmit && invalidEmail }" />
+                    <div v-if="attemptSubmit && missingValue(contactForm.email)" class="invalid-message">This field is required</div>
+                    <div v-if="attemptSubmit && !missingValue(contactForm.email) && invalidEmail" class="invalid-message">Invalid email address</div>
                 </div>
                 <div class="form-label-group">
                     <label for="contactPhoneNumber">Phone Number</label>
-                    <input type="tel" id="contactPhoneNumber" name="phone_number" v-model.trim="contactForm.phone_number" class="form-control" />
+                    <input type="tel" id="contactPhoneNumber" name="phone_number" v-model.trim="contactForm.phone_number" class="form-control" :class="{ 'invalid-field': attemptSubmit && invalidPhone }" />
+                    <div v-if="attemptSubmit && invalidPhone" class="invalid-message">Invalid phone number</div>
                 </div>
                 <div class="form-label-group">
-                    <label>What type of event are you hosting?</label>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeWedding" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Wedding" />
-                        <label for="eventTypeWedding">Wedding</label>
+                    <div class="radio-group" :class="{ 'invalid-radio': attemptSubmit && invalidEventType }">
+                        <label>What type of event are you hosting? *</label>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypeWedding" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Wedding" />
+                            <label for="eventTypeWedding">Wedding</label>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypeFamily" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Family" />
+                            <label for="eventTypeFamily">Family</label>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypeNewborn" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Newborn" />
+                            <label for="eventTypeNewborn">Newborn</label>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypeEngagement" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Engagement" />
+                            <label for="eventTypeEngagement">Engagement</label>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypePortrait" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Portrait" />
+                            <label for="eventTypePortrait">Portrait</label>
+                        </div>
+                        <div class="radio-container">
+                            <input type="radio" id="eventTypeOther" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Other" />
+                            <label for="eventTypeOther">Other</label>
+                        </div>
                     </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeCorporate" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Corporate" />
-                        <label for="eventTypeCorporate">Corporate</label>
-                    </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeFamily" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Family" />
-                        <label for="eventTypeFamily">Family</label>
-                    </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeNewborn" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Newborn" />
-                        <label for="eventTypeNewborn">Newborn</label>
-                    </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeEngagement" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Engagement" />
-                        <label for="eventTypeEngagement">Engagement</label>
-                    </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypePortrait" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Portrait" />
-                        <label for="eventTypePortrait">Portrait</label>
-                    </div>
-                    <div class="radio-container">
-                        <input type="radio" id="eventTypeOther" name="event_type" v-model="contactForm.event_type" class="radio-input" value="Other" />
-                        <label for="eventTypeOther">Other</label>
-                    </div>
+                    <div v-if="attemptSubmit && invalidEventType" class="invalid-message">This field is required</div>
                 </div>
                 <div class="form-label-group">
                     <label for="contactEventDate">Event Date</label>
-                    <input type="date" id="contactEventDate" name="event_date" v-model.trim="contactForm.event_date" class="form-control" />
+                    <!-- <input type="date" id="contactEventDate" name="event_date" v-model.trim="contactForm.event_date" class="form-control" :class="{ 'invalid-field': attemptSubmit && invalidEventDate }" /> -->
+                    <vuejs-datepicker placeholder="Select Date" v-model="contactForm.event_date" input-class="form-control" format="MMMM d yyyy"></vuejs-datepicker>
+                    <div v-if="attemptSubmit && invalidEventDate" class="invalid-message">Invalid Date</div>
                 </div>
                 <div class="form-label-group">
                     <label for="contactLocation">Location</label>
@@ -96,6 +101,8 @@
         </div>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/vuejs-datepicker"></script>
+        <script type="text/javascript" src="https://unpkg.com/moment@2.24.0/min/moment.min.js"></script>
         <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" src="index.js"></script>
     </body>

@@ -4,6 +4,9 @@ const hbProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 // root instance
 let avemContactForm = new Vue({
     el: '#avemContactForm',
+    components: {
+        vuejsDatepicker
+    },
     data: {
         attemptSubmit: false,
         contactForm: {
@@ -30,26 +33,48 @@ let avemContactForm = new Vue({
         invalidName: function(){
             return this.contactForm.full_name === '';
         },
-        validEmail: function(){},
-        validPhone: function(){}
+        invalidEmail: function(){
+            let missingValue = this.contactForm.email === '';
+            let emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            let validEmail = emailRegEx.test(String(this.contactForm.email).toLowerCase());
+
+            return missingValue || !validEmail;
+        },
+        invalidPhone: function(){
+            let missingValue = this.contactForm.phone_number === '';
+            let phoneRegEx = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+            let validPhone = phoneRegEx.test(String(this.contactForm.phone_number));
+
+            return !missingValue && !validPhone;
+        },
+        invalidEventType: function(){
+            return this.contactForm.event_type === '';
+        },
+        invalidEventDate: function(){
+            let missingValue = this.contactForm.event_date === '';
+
+            return !missingValue && !moment(this.contactForm.event_date).isValid();
+        }
     },
     methods: {
         submitContactForm(){
             let self = this;
+            let formattedForm = self.contactForm;
 
             self.formReady = false;
             self.formSending = true;
 
             setTimeout(function(){
-                let dateSplit = self.contactForm.event_date.split('-');
-                let formattedDate = dateSplit[1] + '/' + dateSplit[2] + '/' + dateSplit[0].slice(2);
+                let dateSplit = moment(formattedForm.event_date).toArray();
+                let formattedDate = (dateSplit[1] + 1).toString() + '/' + dateSplit[2].toString() + '/' + dateSplit[0].toString().slice(2);
     
-                self.contactForm.event_date = formattedDate;
+                formattedForm.event_date = formattedDate;
+                formattedForm.event_details = formattedForm.event_details + ' - Sent from avemphotography.com';
     
                 axios({
                     method: 'post',
                     url: hbProxyUrl + hbFormUrl,
-                    data: self.contactForm
+                    data: formattedForm
                 }).then(
                     function(){
                         self.resetContactForm();
@@ -98,12 +123,15 @@ let avemContactForm = new Vue({
         validateForm(evt){
             this.attemptSubmit = true;
 
-            if (this.invalidName){
+            if (this.invalidName || this.invalidEmail || this.invalidPhone || this.invalidEventType || this.invalidEventDate){
                 evt.preventDefault();
             }
             else {
                 this.submitContactForm();
             }
+        },
+        missingValue: function(val){
+            return !val.length;
         }
     }
 });
